@@ -1,44 +1,28 @@
 # Sales Performance Dashboard
 
-An interactive sales reporting application built with Python, Streamlit, Pandas and Plotly. Upload a CSV, select the measure and dimensions, filter the dataset, inspect trends and export the filtered records.
+An interactive sales reporting application built with Python, Streamlit, Pandas and Plotly. Upload a CSV, choose a numeric measure and dimensions, filter the data, inspect trends and export filtered records.
 
 ## Business questions
-- What is the total and average value of the selected sales measure?
-- Which regions and products contribute the most to the selected measure?
+- What is the total and average value of the selected measure?
+- Which regions and products contribute most to that measure?
 - How does the selected measure change month by month?
-- How do results change when users filter the region or product?
+- How do results change when region or product filters are applied?
 
 ## Features
-- CSV upload with basic dataset validation
-- Selectable numeric measure, date field, region and product dimensions
-- KPI cards for total, average and valid observation count
-- Monthly trend with invalid dates excluded
-- Region and product aggregations
-- Filtered table and CSV export
-- Reusable analytics functions separated from the Streamlit interface
-- Unit tests for aggregation, KPI calculations, date handling and invalid inputs
+- CSV upload and basic data validation
+- Configurable measure, date, region and product fields
+- KPI cards, monthly trend and grouped comparisons
+- Filtered data preview and CSV export
+- Reusable calculations separated into `analytics.py`
+- Unit tests for validation, KPIs, grouping and date handling
 
 ## Architecture
 ```text
-CSV upload
-   |
-   v
-Dataset validation (analytics.py)
-   |
-   +--> KPI calculations
-   +--> Region / product aggregations
-   +--> Monthly trend
-   |
-   v
-Streamlit UI + Plotly charts
-   |
-   v
-Filtered table / CSV export
+CSV -> validation -> analytics functions -> Streamlit + Plotly -> filtered CSV
 ```
 
 ## Run locally
-Python 3.10+ is recommended.
-
+Python 3.10+:
 ```bash
 python -m venv .venv
 # Windows: .venv\\Scripts\\activate
@@ -47,25 +31,16 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Open the local URL printed by Streamlit. Without an uploaded file, the app uses a small illustrative dataset labelled as sample data.
-
-## Input format
-The CSV should contain at least one numeric column. Date, region and product columns are optional and can be selected in the sidebar. The app does not assume that a column named "Sales" is profit or revenue unless the source owner defines it that way.
+## Input contract
+At least one numeric column is required. Date, region and product fields are optional. Choose the relevant columns in the sidebar. The selected numeric measure is summed as-is. Revenue, profit and margin are not inferred from column names.
 
 ## Tests
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## Data quality and interpretation
-- Non-numeric measure cells are excluded from KPI and aggregation calculations.
-- Invalid dates are excluded from monthly trend calculations.
-- Missing category labels are excluded from grouped summaries.
-- Results depend on the selected measure and uploaded source data.
-- The sample data is synthetic and must not be presented as company performance.
-
-## Limitations
-This is a CSV analytics application, not a live ERP integration or a production forecasting system. It does not calculate profit or margin without explicit source columns and definitions.
+## Data quality and limitations
+Invalid numeric cells and dates are excluded from the corresponding calculations. Missing category labels are excluded from grouped summaries. Sample data is illustrative only and must not be represented as real business performance. This is a CSV analytics app, not an ERP integration or forecasting system.
 
 ## Author
 Debarghya Hajra | Python, Pandas, Streamlit, Plotly

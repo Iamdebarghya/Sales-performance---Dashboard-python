@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from app import validate_dataset, calculate_kpis, aggregate_by, monthly_trend
+from analytics import validate_dataset, calculate_kpis, aggregate_by, monthly_trend
 
 class DashboardAnalyticsTests(unittest.TestCase):
     def setUp(self):

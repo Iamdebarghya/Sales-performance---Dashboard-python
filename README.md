@@ -1,25 +1,44 @@
 # Sales Performance Dashboard
 
-An interactive Streamlit application for exploring sales performance from a CSV file. The dashboard provides KPI summaries, a monthly trend, regional comparisons, product mix, filters and a filtered-data export.
+An interactive sales reporting application built with Python, Streamlit, Pandas and Plotly. Upload a CSV, select the measure and dimensions, filter the dataset, inspect trends and export the filtered records.
 
 ## Business questions
-- What is total sales for the selected dataset and filters?
-- How does sales performance change over time?
-- Which regions and products contribute most to sales?
-- How does the filtered dataset differ from the full dataset?
+- What is the total and average value of the selected sales measure?
+- Which regions and products contribute the most to the selected measure?
+- How does the selected measure change month by month?
+- How do results change when users filter the region or product?
 
 ## Features
-- Upload a user-provided CSV
-- Region filter and numeric sales-column selection
-- Sales total and row-count KPIs
-- Monthly trend when a date field is present
-- Region and product charts when those fields are present
-- Filtered CSV download
+- CSV upload with basic dataset validation
+- Selectable numeric measure, date field, region and product dimensions
+- KPI cards for total, average and valid observation count
+- Monthly trend with invalid dates excluded
+- Region and product aggregations
+- Filtered table and CSV export
+- Reusable analytics functions separated from the Streamlit interface
+- Unit tests for aggregation, KPI calculations, date handling and invalid inputs
 
-## Expected input
-At minimum, provide one numeric sales/revenue column. For the full experience, use columns named `Date`, `Region`, `Product` and a numeric `Sales` field. Column names can be adjusted in the uploaded source; the app uses the selected numeric column for value calculations.
+## Architecture
+```text
+CSV upload
+   |
+   v
+Dataset validation (analytics.py)
+   |
+   +--> KPI calculations
+   +--> Region / product aggregations
+   +--> Monthly trend
+   |
+   v
+Streamlit UI + Plotly charts
+   |
+   v
+Filtered table / CSV export
+```
 
 ## Run locally
+Python 3.10+ is recommended.
+
 ```bash
 python -m venv .venv
 # Windows: .venv\\Scripts\\activate
@@ -28,17 +47,25 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Deployment
-The live Streamlit service is hosted on Render and tracks the `live-dashboard` branch. Free instances may sleep when idle and take a short time to wake.
+Open the local URL printed by Streamlit. Without an uploaded file, the app uses a small illustrative dataset labelled as sample data.
 
-## Data methodology
-The dashboard aggregates the selected numeric field. It does not assume that sales equals profit. Use a separate profit column and explicitly extend the analysis before presenting profitability conclusions. Uploaded files are processed by the running app; do not upload confidential customer data.
+## Input format
+The CSV should contain at least one numeric column. Date, region and product columns are optional and can be selected in the sidebar. The app does not assume that a column named "Sales" is profit or revenue unless the source owner defines it that way.
 
-## Validation
-Run the test suite with:
+## Tests
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+## Data quality and interpretation
+- Non-numeric measure cells are excluded from KPI and aggregation calculations.
+- Invalid dates are excluded from monthly trend calculations.
+- Missing category labels are excluded from grouped summaries.
+- Results depend on the selected measure and uploaded source data.
+- The sample data is synthetic and must not be presented as company performance.
+
+## Limitations
+This is a CSV analytics application, not a live ERP integration or a production forecasting system. It does not calculate profit or margin without explicit source columns and definitions.
 
 ## Author
 Debarghya Hajra | Python, Pandas, Streamlit, Plotly
